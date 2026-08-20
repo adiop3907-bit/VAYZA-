@@ -1,0 +1,10 @@
+{
+  "name": "VAYZA — Chaussures & Sneakers",
+  "description": "Boutique e-commerce & CMS/ERP spécialisée exclusivement dans la vente de chaussures et sneakers au Sénégal et en Afrique de l'Ouest.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

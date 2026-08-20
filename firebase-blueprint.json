@@ -1,0 +1,144 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Footwear item available in the store catalogue",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 150 },
+        "brand": { "type": "string", "maxLength": 100 },
+        "category": { "type": "string", "enum": ["sneakers", "moccasins", "sandals", "boots", "formal", "accessories"] },
+        "gender": { "type": "string", "enum": ["homme", "femme", "mixte"] },
+        "price": { "type": "number" },
+        "promoPrice": { "type": "number" },
+        "description": { "type": "string", "maxLength": 2000 },
+        "images": { "type": "array" },
+        "sizes": { "type": "array" },
+        "colors": { "type": "array" },
+        "inStock": { "type": "boolean" },
+        "totalStock": { "type": "number" },
+        "stockBySize": { "type": "object" },
+        "isNewArrival": { "type": "boolean" },
+        "isBestSeller": { "type": "boolean" },
+        "isPromo": { "type": "boolean" },
+        "rating": { "type": "number" },
+        "reviewCount": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "brand", "category", "gender", "price", "images", "sizes", "colors", "inStock"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer purchase order for shoes and delivery",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "orderNumber": { "type": "string", "maxLength": 32 },
+        "customer": { "type": "object" },
+        "items": { "type": "array" },
+        "subtotal": { "type": "number" },
+        "deliveryFee": { "type": "number" },
+        "discount": { "type": "number" },
+        "totalAmount": { "type": "number" },
+        "paymentMethod": { "type": "string", "enum": ["wave", "orange_money", "cash_delivery", "card"] },
+        "paymentStatus": { "type": "string", "enum": ["en_attente", "paye", "rembourse"] },
+        "status": { "type": "string", "enum": ["recue", "confirmee", "en_preparation", "en_livraison", "livree", "annulee"] },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "appliedCoupon": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "orderNumber", "customer", "items", "subtotal", "deliveryFee", "totalAmount", "paymentMethod", "status", "createdAt"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Customer product feedback and rating",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "productId": { "type": "string", "maxLength": 64 },
+        "customerName": { "type": "string", "maxLength": 100 },
+        "rating": { "type": "number" },
+        "comment": { "type": "string", "maxLength": 1000 },
+        "isVerifiedPurchase": { "type": "boolean" },
+        "status": { "type": "string", "enum": ["en_attente", "publie", "rejete"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "productId", "customerName", "rating", "comment", "status", "createdAt"]
+    },
+    "Coupon": {
+      "title": "Coupon",
+      "description": "Promotional discount voucher",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "code": { "type": "string", "maxLength": 30 },
+        "discountPercent": { "type": "number" },
+        "discountAmount": { "type": "number" },
+        "minOrderAmount": { "type": "number" },
+        "isActive": { "type": "boolean" },
+        "expiresAt": { "type": "string" }
+      },
+      "required": ["id", "code", "isActive"]
+    },
+    "SiteSettings": {
+      "title": "SiteSettings",
+      "description": "Store configuration and contact details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "storeName": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "whatsapp": { "type": "string", "maxLength": 30 },
+        "bannerText": { "type": "string", "maxLength": 300 },
+        "bannerActive": { "type": "boolean" },
+        "deliveryStandardFee": { "type": "number" },
+        "deliveryExpressFee": { "type": "number" },
+        "deliveryRegionsFee": { "type": "number" },
+        "currency": { "type": "string", "maxLength": 10 },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "storeName", "phone", "whatsapp"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Authorized administrator profiles",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "maxLength": 120 },
+        "role": { "type": "string", "enum": ["superadmin", "manager", "support"] },
+        "name": { "type": "string", "maxLength": 100 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["email", "role", "name"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": { "$ref": "Product" },
+      "description": "Store product catalogue"
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "Order" },
+      "description": "Customer orders and tracking logs"
+    },
+    "/reviews/{reviewId}": {
+      "schema": { "$ref": "Review" },
+      "description": "Product reviews and customer ratings"
+    },
+    "/coupons/{couponId}": {
+      "schema": { "$ref": "Coupon" },
+      "description": "Promotional codes"
+    },
+    "/settings/{settingId}": {
+      "schema": { "$ref": "SiteSettings" },
+      "description": "Store global configuration"
+    },
+    "/admins/{adminId}": {
+      "schema": { "$ref": "Admin" },
+      "description": "Whitelisted administrator credentials"
+    }
+  }
+}
